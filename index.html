@@ -29,73 +29,72 @@ button{font:inherit;color:inherit;background:none;border:0}
 
 /* ───────── hero ───────── */
 .hero{position:relative;height:100svh;min-height:560px;overflow:hidden;
-  background:url(img/bg.webp) center/cover}
-/* poster-ratio stage: covers the viewport height, crops the sides on phones */
+  background:url(img/bg.webp?v=3) center/cover}
+/* poster-ratio stage: covers the viewport height, crops the sides on phones.
+   +0.04%: the gate's symmetry axis sits at x=1251 of 2504, so nudge it onto the exact centre */
 .stage{position:absolute;top:0;left:50%;height:100%;aspect-ratio:2504/3532;min-width:100%;
-  transform:translateX(-50%);background:url(img/bg.webp) top/100% auto no-repeat;perspective:1400px}
-.door{position:absolute;top:0;width:50%;aspect-ratio:1000/2356;
-  transition:transform 2.4s cubic-bezier(.55,0,.2,1),opacity 2.4s ease;will-change:transform}
+  background:url(img/bg.webp?v=3) top/100% auto no-repeat;perspective:1400px;
+  opacity:0;filter:blur(10px);transform:translateX(calc(-50% + .04%)) scale(1.04);
+  transition:opacity 1.3s ease,filter 1.3s ease,transform 1.6s cubic-bezier(.2,.7,.2,1)}
+.unlock .stage{opacity:1;filter:none;transform:translateX(calc(-50% + .04%))}
+.door{position:absolute;top:0;width:50%;aspect-ratio:1000/2356;will-change:transform;
+  transition:transform 2.6s cubic-bezier(.55,0,.2,1),opacity 2.6s ease}
 .door img{width:100%;height:100%}
 .door.l{left:0;transform-origin:0 50%}
 .door.r{right:0;transform-origin:100% 50%}
-.open .door.l{transform:rotateY(78deg);opacity:.55}
-.open .door.r{transform:rotateY(-78deg);opacity:.55}
+.open .door.l{transform:rotateY(78deg);opacity:.5}
+.open .door.r{transform:rotateY(-78deg);opacity:.5}
 
-.content{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;
-  padding:calc(env(safe-area-inset-top) + 18px) var(--gutter) calc(env(safe-area-inset-bottom) + 18px)}
+/* key: alone on the first screen, dead centre of the viewport */
+.key{position:absolute;z-index:3;top:50%;left:50%;transform:translate(-50%,-50%);display:block;line-height:0;cursor:pointer;
+  -webkit-tap-highlight-color:transparent;transition:opacity .9s ease .2s}
+.key img{width:clamp(70px,20vw,92px);height:auto;transition:transform .9s cubic-bezier(.3,0,.2,1),filter .9s}
+.key::before{content:"";position:absolute;width:220%;aspect-ratio:1;top:50%;left:50%;transform:translate(-50%,-50%);border-radius:50%;
+  background:radial-gradient(closest-side,rgba(255,255,255,.9),rgba(235,238,255,.45) 55%,transparent);animation:glow 2.4s ease-in-out infinite;z-index:-1}
+@keyframes glow{50%{transform:translate(-50%,-50%) scale(1.15);opacity:.55}}
+.key:active img{transform:scale(.95)}
+.unlock .key{opacity:0;pointer-events:none}
+.unlock .key img{transform:scale(1.2);filter:drop-shadow(0 0 16px #fff) drop-shadow(0 0 28px #fff)}
+.unlock .key::before{animation:none;opacity:0;transition:opacity .6s}
+
+.content{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;align-items:center;
+  padding:calc(env(safe-area-inset-top) + 18px) var(--gutter) calc(env(safe-area-inset-bottom) + 18px);pointer-events:none}
+.content>*{width:100%}
 .info{display:flex;justify-content:space-between;font-weight:700;font-size:11px;line-height:1.35;letter-spacing:.01em;text-transform:uppercase}
 .info p:last-child{text-align:right}
 
-.center{flex:1;display:grid;place-items:center;min-height:0}
-.center>*{grid-area:1/1}
+/* elements slide in from the top, one after another */
+.rv{opacity:0;transform:translateY(-26px);transition:opacity 1s ease,transform 1.2s cubic-bezier(.2,.7,.2,1);transition-delay:calc(var(--i)*.16s)}
+.reveal .rv{opacity:1;transform:none}
 
-/* key */
-.key{position:relative;display:grid;place-items:center;gap:14px;cursor:pointer;-webkit-tap-highlight-color:transparent;
-  transition:opacity .5s .7s}
-.key img{width:clamp(66px,19vw,88px);height:auto;transition:transform .7s cubic-bezier(.3,0,.2,1),filter .7s}
-.key::before{content:"";position:absolute;width:210px;height:210px;top:50%;left:50%;margin:-118px 0 0 -105px;border-radius:50%;
-  background:radial-gradient(closest-side,rgba(255,255,255,.95),rgba(235,238,255,.5) 55%,transparent);animation:glow 2.2s ease-in-out infinite;z-index:-1}
-.key span{font-size:11px;font-weight:700;color:#fff;text-shadow:0 0 2px rgba(40,42,70,.9),0 1px 8px rgba(40,42,70,.6);letter-spacing:.24em;padding-left:.24em;animation:blink 2.2s ease-in-out infinite}
-@keyframes glow{50%{transform:scale(1.18);opacity:.6}}
-@keyframes blink{50%{opacity:.45}}
-.key:active img{transform:scale(.95)}
-.open .key{opacity:0;pointer-events:none}
-.open .key img{transform:scale(1.25);filter:drop-shadow(0 0 18px #fff) drop-shadow(0 0 30px #fff)}
-.open .key::before,.open .key span{animation:none;opacity:0}
+/* countdown — stacked like film credits */
+.count{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(10px,2svh,18px)}
+.unit{display:flex;flex-direction:column;align-items:center;gap:clamp(5px,.9svh,8px)}
+.unit label{font-size:9.5px;font-weight:600;letter-spacing:.42em;margin-right:-.42em;color:var(--ink)}
+.unit .digits{display:flex;gap:3px}
 
-/* countdown */
-.count{display:grid;grid-template-columns:repeat(2,auto);gap:18px 20px;justify-content:center;
-  opacity:0;transform:translateY(14px) scale(.96);transition:opacity 1.2s 1.2s,transform 1.4s 1.2s cubic-bezier(.2,.7,.2,1);pointer-events:none}
-.open .count{opacity:1;transform:none}
-.unit{display:grid;justify-items:center;gap:8px}
-.unit .digits{display:flex;gap:5px}
-.unit label{font-size:11px;font-weight:700;letter-spacing:.22em;padding-left:.22em}
-.colon{display:none}
-
-.flip{--w:clamp(58px,19vw,84px);--h:calc(var(--w)*1.36);position:relative;width:var(--w);height:var(--h);
-  font-size:calc(var(--w)*1.02);font-weight:800;line-height:1;color:var(--lav);perspective:300px;border-radius:9px;
-  box-shadow:0 10px 24px -10px rgba(30,32,64,.55);font-variant-numeric:tabular-nums}
+.flip{--w:clamp(28px,4.3svh,38px);--h:calc(var(--w)*1.32);position:relative;width:var(--w);height:var(--h);
+  font-size:calc(var(--w)*.92);font-weight:700;line-height:1;color:var(--lav);perspective:200px;border-radius:4px;
+  box-shadow:0 6px 14px -8px rgba(30,32,64,.6);font-variant-numeric:tabular-nums}
 .flip .h{position:absolute;left:0;right:0;height:50%;overflow:hidden;background:var(--card);backface-visibility:hidden}
-.flip .h b{position:absolute;left:0;right:0;height:200%;display:grid;place-items:center;font-weight:800;letter-spacing:-.02em}
-.flip .t{top:0;border-radius:9px 9px 0 0;transform-origin:50% 100%}
+.flip .h b{position:absolute;left:0;right:0;height:200%;display:grid;place-items:center;font-weight:700}
+.flip .t{top:0;border-radius:4px 4px 0 0;transform-origin:50% 100%;background:linear-gradient(#444969,#3d4160)}
 .flip .t b{top:0}
-.flip .bt{bottom:0;border-radius:0 0 9px 9px;transform-origin:50% 0}
+.flip .bt{bottom:0;border-radius:0 0 4px 4px;transform-origin:50% 0}
 .flip .bt b{bottom:0}
-.flip .t{background:linear-gradient(#444969,#3d4160)}
 .flip::after{content:"";position:absolute;left:0;right:0;top:50%;height:1px;background:rgba(20,22,40,.55);z-index:5}
 .flip .ft{z-index:3}
 .flip .fb{z-index:3;transform:rotateX(90deg)}
-.flip.go .ft{animation:ft .32s ease-in forwards}
-.flip.go .fb{animation:fb .32s .32s ease-out forwards}
+.flip.go .ft{animation:ft .3s ease-in forwards}
+.flip.go .fb{animation:fb .3s .3s ease-out forwards}
 @keyframes ft{to{transform:rotateX(-90deg)}}
 @keyframes fb{from{transform:rotateX(90deg)}to{transform:rotateX(0)}}
 
-.title{display:grid;justify-items:center;gap:clamp(8px,1.6svh,14px);padding-bottom:4px}
+.title{display:flex;flex-direction:column;align-items:center}
 .title .sub{width:min(46vw,210px)}
-.title .main{width:min(88vw,430px)}
-.title .hae{width:min(54vw,260px)}
-.scroll{margin-top:clamp(10px,2svh,18px);font-size:10px;font-weight:700;letter-spacing:.24em;color:#fff;opacity:0;transition:opacity .8s 2.6s}
-.open .scroll{opacity:.85}
+.title .main{width:min(86vw,420px);margin-top:clamp(8px,1.4svh,12px)}
+.title .hae{width:min(53vw,256px);margin-top:clamp(8px,1.4svh,12px)}
+.scroll{margin-top:clamp(12px,2.2svh,20px);font-size:9.5px;font-weight:600;letter-spacing:.42em;margin-right:-.42em;color:#fff;text-align:center}
 
 /* ───────── names ───────── */
 .names{position:relative;background:#40455b url(img/navy.webp) center/cover;color:var(--lav);text-align:center;
@@ -113,14 +112,9 @@ button{font:inherit;color:inherit;background:none;border:0}
 .foot p:last-child{text-align:right}
 .foot img{width:26px}
 
-@media (min-width:700px){
-  .count{grid-template-columns:repeat(7,auto);align-items:start;gap:0 12px}
-  .colon{display:block;font-size:44px;font-weight:800;color:var(--card);line-height:1;margin-top:calc(var(--w)*.45)}
-  .flip{--w:72px}
-  .list{grid-template-columns:repeat(3,max-content)}
-}
+@media (min-width:700px){ .list{grid-template-columns:repeat(3,max-content)} }
 @media (prefers-reduced-motion:reduce){
-  .door,.count,.key{transition-duration:.01s;transition-delay:0s}
+  .stage,.door,.rv,.key{transition-duration:.01s;transition-delay:0s}
   .flip.go .ft,.flip.go .fb{animation-duration:.01s;animation-delay:0s}
 }
 </style>
@@ -134,34 +128,26 @@ button{font:inherit;color:inherit;background:none;border:0}
   </div>
   <div class="grain"></div>
 
+  <button class="key" id="key" aria-label="열쇠를 눌러 대문 열기"><img src="img/key.webp?v=3" alt="" draggable="false"></button>
+
   <div class="content">
-    <div class="info">
+    <div class="info rv" style="--i:0">
       <p>SNU Cooperation<br>R&amp;D Center B<br>5F Square Hall</p>
       <p>November 25<br>Wednesday<br>6:00 PM</p>
     </div>
 
-    <div class="center">
-      <button class="key" id="key" aria-label="열쇠를 눌러 대문 열기">
-        <img src="img/key.webp" alt="" draggable="false">
-        <span>TAP THE KEY</span>
-      </button>
-
-      <div class="count" id="count" aria-live="off">
-        <div class="unit"><div class="digits" data-u="d"></div><label>DAYS</label></div>
-        <div class="colon">:</div>
-        <div class="unit"><div class="digits" data-u="h"></div><label>HOURS</label></div>
-        <div class="colon">:</div>
-        <div class="unit"><div class="digits" data-u="m"></div><label>MINUTES</label></div>
-        <div class="colon">:</div>
-        <div class="unit"><div class="digits" data-u="s"></div><label>SECONDS</label></div>
-      </div>
+    <div class="count" aria-live="off">
+      <div class="unit rv" style="--i:1"><label>DAYS</label><div class="digits" data-u="d"></div></div>
+      <div class="unit rv" style="--i:2"><label>HOURS</label><div class="digits" data-u="h"></div></div>
+      <div class="unit rv" style="--i:3"><label>MINUTES</label><div class="digits" data-u="m"></div></div>
+      <div class="unit rv" style="--i:4"><label>SECONDS</label><div class="digits" data-u="s"></div></div>
     </div>
 
     <div class="title">
-      <img class="sub" src="img/title-sub.webp" alt="2026 Graduation Ceremony">
-      <img class="main" src="img/title.webp" alt="ONE STEP BEYOND">
-      <img class="hae" src="img/title-hae.webp" alt="HAPPILY EVER AFTER">
-      <p class="scroll">SCROLL ↓</p>
+      <img class="sub rv" style="--i:5" src="img/title-sub.webp?v=3" alt="2026 Graduation Ceremony">
+      <img class="main rv" style="--i:6" src="img/title.webp?v=3" alt="ONE STEP BEYOND">
+      <img class="hae rv" style="--i:7" src="img/title-hae.webp?v=3" alt="HAPPILY EVER AFTER">
+      <p class="scroll rv" style="--i:8">SCROLL ↓</p>
     </div>
   </div>
 </section>
@@ -208,22 +194,23 @@ const cards={};
 document.querySelectorAll('.digits').forEach(d=>{ cards[d.dataset.u]=[card(),card()]; d.append(...cards[d.dataset.u]); });
 
 let opened=false;
-function tick(){
+function update(){
   if(opened){
     const s=Math.max(0,Math.floor((TARGET-Date.now())/1000));
     const v={d:Math.min(99,Math.floor(s/86400)),h:Math.floor(s/3600)%24,m:Math.floor(s/60)%60,s:s%60};
     for(const k in v){ const str=String(v[k]).padStart(2,'0'); cards[k][0].set(str[0]); cards[k][1].set(str[1]); }
   }
-  setTimeout(tick,1000-Date.now()%1000+5);
 }
-tick();
+(function tick(){ update(); setTimeout(tick,1000-Date.now()%1000+5); })();
 
+const hero=document.getElementById('hero');
 document.getElementById('key').addEventListener('click',()=>{
-  if(opened) return;
+  if(hero.classList.contains('unlock')) return;
   navigator.vibrate?.(25);
-  document.getElementById('hero').classList.add('open');
-  setTimeout(()=>{ opened=true; }, 1300);          // digits flip from 00 once the doors are half open
-  setTimeout(()=>document.body.classList.remove('locked'), 2600);
+  hero.classList.add('unlock');                                       // key fades, gate fades in
+  setTimeout(()=>hero.classList.add('open'),1500);                    // doors swing open
+  setTimeout(()=>{ hero.classList.add('reveal'); opened=true; update(); },3200);  // credits slide in
+  setTimeout(()=>document.body.classList.remove('locked'),4800);
 });
 </script>
 </body>
