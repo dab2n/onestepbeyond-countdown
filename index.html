@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#dfe2f2">
+<title>ONE STEP BEYOND — 2026 Graduation Ceremony</title>
+<meta name="description" content="2026 Graduation Ceremony · November 25 Wednesday 6:00 PM · SNU Cooperation R&D Center B 5F Square Hall">
+<meta property="og:title" content="ONE STEP BEYOND — HAPPILY EVER AFTER">
+<meta property="og:description" content="2026 Graduation Ceremony · 11.25 WED 6:00 PM">
+<link rel="preload" href="img/gate-l.webp" as="image">
+<link rel="preload" href="img/gate-r.webp" as="image">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+:root{
+  --ink:#34354a; --navy:#40455b; --card:#3d4160; --lav:#dfe3f5; --lav2:#b2bce8;
+  --gutter:16px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#c9cdea;color:var(--ink);font-family:Pretendard,-apple-system,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+body{overflow-x:hidden}
+body.locked{overflow:hidden;height:100svh}
+img{display:block;max-width:100%;user-select:none;-webkit-user-drag:none}
+button{font:inherit;color:inherit;background:none;border:0}
+
+/* film grain (poster texture) */
+.grain{position:absolute;inset:0;pointer-events:none;opacity:.22;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .2 0 0 0 0 .2 0 0 0 0 .3 0 0 0 1.4 -.4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+/* ───────── hero ───────── */
+.hero{position:relative;height:100svh;min-height:560px;overflow:hidden;
+  background:url(img/bg.webp) center/cover}
+/* poster-ratio stage: covers the viewport height, crops the sides on phones */
+.stage{position:absolute;top:0;left:50%;height:100%;aspect-ratio:2504/3532;min-width:100%;
+  transform:translateX(-50%);background:url(img/bg.webp) top/100% auto no-repeat;perspective:1400px}
+.door{position:absolute;top:0;width:50%;aspect-ratio:1000/2356;
+  transition:transform 2.4s cubic-bezier(.55,0,.2,1),opacity 2.4s ease;will-change:transform}
+.door img{width:100%;height:100%}
+.door.l{left:0;transform-origin:0 50%}
+.door.r{right:0;transform-origin:100% 50%}
+.open .door.l{transform:rotateY(78deg);opacity:.55}
+.open .door.r{transform:rotateY(-78deg);opacity:.55}
+
+.content{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;
+  padding:calc(env(safe-area-inset-top) + 18px) var(--gutter) calc(env(safe-area-inset-bottom) + 18px)}
+.info{display:flex;justify-content:space-between;font-weight:700;font-size:11px;line-height:1.35;letter-spacing:.01em;text-transform:uppercase}
+.info p:last-child{text-align:right}
+
+.center{flex:1;display:grid;place-items:center;min-height:0}
+.center>*{grid-area:1/1}
+
+/* key */
+.key{position:relative;display:grid;place-items:center;gap:14px;cursor:pointer;-webkit-tap-highlight-color:transparent;
+  transition:opacity .5s .7s}
+.key img{width:clamp(66px,19vw,88px);height:auto;transition:transform .7s cubic-bezier(.3,0,.2,1),filter .7s}
+.key::before{content:"";position:absolute;width:210px;height:210px;top:50%;left:50%;margin:-118px 0 0 -105px;border-radius:50%;
+  background:radial-gradient(closest-side,rgba(255,255,255,.95),rgba(235,238,255,.5) 55%,transparent);animation:glow 2.2s ease-in-out infinite;z-index:-1}
+.key span{font-size:11px;font-weight:700;color:#fff;text-shadow:0 0 2px rgba(40,42,70,.9),0 1px 8px rgba(40,42,70,.6);letter-spacing:.24em;padding-left:.24em;animation:blink 2.2s ease-in-out infinite}
+@keyframes glow{50%{transform:scale(1.18);opacity:.6}}
+@keyframes blink{50%{opacity:.45}}
+.key:active img{transform:scale(.95)}
+.open .key{opacity:0;pointer-events:none}
+.open .key img{transform:scale(1.25);filter:drop-shadow(0 0 18px #fff) drop-shadow(0 0 30px #fff)}
+.open .key::before,.open .key span{animation:none;opacity:0}
+
+/* countdown */
+.count{display:grid;grid-template-columns:repeat(2,auto);gap:18px 20px;justify-content:center;
+  opacity:0;transform:translateY(14px) scale(.96);transition:opacity 1.2s 1.2s,transform 1.4s 1.2s cubic-bezier(.2,.7,.2,1);pointer-events:none}
+.open .count{opacity:1;transform:none}
+.unit{display:grid;justify-items:center;gap:8px}
+.unit .digits{display:flex;gap:5px}
+.unit label{font-size:11px;font-weight:700;letter-spacing:.22em;padding-left:.22em}
+.colon{display:none}
+
+.flip{--w:clamp(58px,19vw,84px);--h:calc(var(--w)*1.36);position:relative;width:var(--w);height:var(--h);
+  font-size:calc(var(--w)*1.02);font-weight:800;line-height:1;color:var(--lav);perspective:300px;border-radius:9px;
+  box-shadow:0 10px 24px -10px rgba(30,32,64,.55);font-variant-numeric:tabular-nums}
+.flip .h{position:absolute;left:0;right:0;height:50%;overflow:hidden;background:var(--card);backface-visibility:hidden}
+.flip .h b{position:absolute;left:0;right:0;height:200%;display:grid;place-items:center;font-weight:800;letter-spacing:-.02em}
+.flip .t{top:0;border-radius:9px 9px 0 0;transform-origin:50% 100%}
+.flip .t b{top:0}
+.flip .bt{bottom:0;border-radius:0 0 9px 9px;transform-origin:50% 0}
+.flip .bt b{bottom:0}
+.flip .t{background:linear-gradient(#444969,#3d4160)}
+.flip::after{content:"";position:absolute;left:0;right:0;top:50%;height:1px;background:rgba(20,22,40,.55);z-index:5}
+.flip .ft{z-index:3}
+.flip .fb{z-index:3;transform:rotateX(90deg)}
+.flip.go .ft{animation:ft .32s ease-in forwards}
+.flip.go .fb{animation:fb .32s .32s ease-out forwards}
+@keyframes ft{to{transform:rotateX(-90deg)}}
+@keyframes fb{from{transform:rotateX(90deg)}to{transform:rotateX(0)}}
+
+.title{display:grid;justify-items:center;gap:clamp(8px,1.6svh,14px);padding-bottom:4px}
+.title .sub{width:min(46vw,210px)}
+.title .main{width:min(88vw,430px)}
+.title .hae{width:min(54vw,260px)}
+.scroll{margin-top:clamp(10px,2svh,18px);font-size:10px;font-weight:700;letter-spacing:.24em;color:#fff;opacity:0;transition:opacity .8s 2.6s}
+.open .scroll{opacity:.85}
+
+/* ───────── names ───────── */
+.names{position:relative;background:#40455b url(img/navy.webp) center/cover;color:var(--lav);text-align:center;
+  padding:150px 28px calc(env(safe-area-inset-bottom) + 150px);overflow:hidden}
+.corner{position:absolute;width:clamp(96px,30vw,150px);opacity:.95}
+.corner.tl{top:18px;left:14px}.corner.tr{top:18px;right:14px;transform:scaleX(-1)}
+.corner.bl{bottom:18px;left:14px;transform:scaleY(-1)}.corner.br{bottom:18px;right:14px;transform:scale(-1)}
+.names h2{font-size:clamp(26px,8vw,40px);font-weight:800;letter-spacing:-.03em;line-height:1}
+.names h3{font-size:clamp(15px,4.6vw,22px);font-weight:700;margin-top:6px}
+.names h4{font-size:13px;font-weight:700;margin:40px 0 18px;letter-spacing:.02em}
+.list{list-style:none;display:grid;grid-template-columns:repeat(2,minmax(0,max-content));justify-content:center;gap:9px 26px;font-size:12.5px;font-weight:500;letter-spacing:.01em}
+.bye{margin-top:44px;font-size:13px;font-weight:700}
+.bye+p{font-size:12.5px;margin-top:10px}
+.foot{display:flex;justify-content:space-between;align-items:center;margin-top:64px;font-size:10.5px;font-weight:600;line-height:1.45;text-align:left}
+.foot p:last-child{text-align:right}
+.foot img{width:26px}
+
+@media (min-width:700px){
+  .count{grid-template-columns:repeat(7,auto);align-items:start;gap:0 12px}
+  .colon{display:block;font-size:44px;font-weight:800;color:var(--card);line-height:1;margin-top:calc(var(--w)*.45)}
+  .flip{--w:72px}
+  .list{grid-template-columns:repeat(3,max-content)}
+}
+@media (prefers-reduced-motion:reduce){
+  .door,.count,.key{transition-duration:.01s;transition-delay:0s}
+  .flip.go .ft,.flip.go .fb{animation-duration:.01s;animation-delay:0s}
+}
+</style>
+</head>
+<body class="locked">
+
+<section class="hero" id="hero">
+  <div class="stage">
+    <div class="door l"><img src="img/gate-l.webp" alt=""></div>
+    <div class="door r"><img src="img/gate-r.webp" alt=""></div>
+  </div>
+  <div class="grain"></div>
+
+  <div class="content">
+    <div class="info">
+      <p>SNU Cooperation<br>R&amp;D Center B<br>5F Square Hall</p>
+      <p>November 25<br>Wednesday<br>6:00 PM</p>
+    </div>
+
+    <div class="center">
+      <button class="key" id="key" aria-label="열쇠를 눌러 대문 열기">
+        <img src="img/key.webp" alt="" draggable="false">
+        <span>TAP THE KEY</span>
+      </button>
+
+      <div class="count" id="count" aria-live="off">
+        <div class="unit"><div class="digits" data-u="d"></div><label>DAYS</label></div>
+        <div class="colon">:</div>
+        <div class="unit"><div class="digits" data-u="h"></div><label>HOURS</label></div>
+        <div class="colon">:</div>
+        <div class="unit"><div class="digits" data-u="m"></div><label>MINUTES</label></div>
+        <div class="colon">:</div>
+        <div class="unit"><div class="digits" data-u="s"></div><label>SECONDS</label></div>
+      </div>
+    </div>
+
+    <div class="title">
+      <img class="sub" src="img/title-sub.webp" alt="2026 Graduation Ceremony">
+      <img class="main" src="img/title.webp" alt="ONE STEP BEYOND">
+      <img class="hae" src="img/title-hae.webp" alt="HAPPILY EVER AFTER">
+      <p class="scroll">SCROLL ↓</p>
+    </div>
+  </div>
+</section>
+
+<section class="names">
+  <img class="corner tl" src="img/corner.webp" alt=""><img class="corner tr" src="img/corner.webp" alt="">
+  <img class="corner bl" src="img/corner.webp" alt=""><img class="corner br" src="img/corner.webp" alt="">
+  <h2>ONE STEP BEYOND</h2>
+  <h3>HAPPILY EVER AFTER</h3>
+  <h4>2026 GRADUATION CEREMONY</h4>
+  <ul class="list">
+    <li>JUNHONG YANG</li><li>JUNGMIN PARK</li><li>SEOHUI LEE</li><li>YUJIN JUNG</li><li>DONGHEON KANG</li><li>YEJI HAN</li>
+    <li>WANHYEOK CHOI</li><li>YUBIN SEO</li><li>MINYEONG JUNG</li><li>JUNGMIN PARK</li><li>IIYEO LEE</li><li>SEOHYEON CHO</li>
+    <li>HYUNBIN SURH</li><li>SIHEON SONG</li><li>SEYEON PARK</li><li>HYEONJI YANG</li><li>SEUNGHEE KIM</li><li>DOWAN KIM</li>
+    <li>JUEUN LEE</li><li>SEUNGWHAN RA</li><li>SIWOO KIM</li><li>JUNWOO LIM</li><li>CHAEYOUNG BEAK</li><li>JUHYEON JEON</li>
+    <li>DOHYUN PARK</li><li>BYEOL JANG</li>
+  </ul>
+  <p class="bye">WITH GOODBYE</p>
+  <p>SOYOUNG JUNG</p>
+  <div class="foot">
+    <p>SNU COOPERATION<br>R&amp;D CENTER B<br>5F SQUARE HALL</p>
+    <img src="img/logo.webp" alt="Samsung Design Membership">
+    <p>NOVEMBER 25<br>WEDNESDAY<br>6:00 PM</p>
+  </div>
+</section>
+
+<script>
+const TARGET = new Date('2026-11-25T18:00:00+09:00').getTime();
+
+// one flip card: static top(new) / static bottom(old) / flap top(old) / flap bottom(new)
+function card(){
+  const el=document.createElement('div'); el.className='flip';
+  el.innerHTML='<div class="h t"><b>0</b></div><div class="h bt"><b>0</b></div><div class="h t ft"><b>0</b></div><div class="h bt fb"><b>0</b></div>';
+  const [t,b,ft,fb]=el.querySelectorAll('b'); let cur='0';
+  el.addEventListener('animationend',e=>{ if(e.animationName==='fb'){ b.textContent=ft.textContent=cur; el.classList.remove('go'); }});
+  el.set=v=>{
+    if(v===cur) return;
+    ft.textContent=b.textContent=cur; t.textContent=fb.textContent=v; cur=v;
+    el.classList.remove('go'); void el.offsetWidth; el.classList.add('go');
+  };
+  return el;
+}
+const cards={};
+document.querySelectorAll('.digits').forEach(d=>{ cards[d.dataset.u]=[card(),card()]; d.append(...cards[d.dataset.u]); });
+
+let opened=false;
+function tick(){
+  if(opened){
+    const s=Math.max(0,Math.floor((TARGET-Date.now())/1000));
+    const v={d:Math.min(99,Math.floor(s/86400)),h:Math.floor(s/3600)%24,m:Math.floor(s/60)%60,s:s%60};
+    for(const k in v){ const str=String(v[k]).padStart(2,'0'); cards[k][0].set(str[0]); cards[k][1].set(str[1]); }
+  }
+  setTimeout(tick,1000-Date.now()%1000+5);
+}
+tick();
+
+document.getElementById('key').addEventListener('click',()=>{
+  if(opened) return;
+  navigator.vibrate?.(25);
+  document.getElementById('hero').classList.add('open');
+  setTimeout(()=>{ opened=true; }, 1300);          // digits flip from 00 once the doors are half open
+  setTimeout(()=>document.body.classList.remove('locked'), 2600);
+});
+</script>
+</body>
+</html>
