@@ -20,7 +20,7 @@
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{background:#c9cdea;color:var(--ink);font-family:Archivo,'Helvetica Neue',Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
 body{overflow-x:hidden}
-body.locked{overflow:hidden;height:100svh}
+html,body{overflow:hidden;height:100svh;overscroll-behavior:none}
 img{display:block;max-width:100%;user-select:none;-webkit-user-drag:none}
 button{font:inherit;color:inherit;background:none;border:0}
 
@@ -64,8 +64,7 @@ button{font:inherit;color:inherit;background:none;border:0}
 .unlock .key img{transform:scale(1.2);filter:drop-shadow(0 0 14px rgba(200,206,245,.9))}
 .unlock .key::before{animation:none;opacity:0;transition:opacity .6s}
 
-.hero .corner{width:var(--cw);z-index:2}
-.hero .corner.rv{opacity:0}
+.hero .corner{z-index:2}
 .reveal .corner.rv{opacity:.95}
 .content{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;align-items:center;text-align:center;color:var(--lav);
   padding:calc(env(safe-area-inset-top) + 18px + var(--cw)*1.134 + 8px) 28px calc(env(safe-area-inset-bottom) + 18px + var(--cw)*1.134 + 6px);
@@ -101,38 +100,26 @@ button{font:inherit;color:inherit;background:none;border:0}
 @keyframes fb{from{transform:rotateX(90deg);opacity:.2}to{transform:rotateX(0)}}
 @keyframes fin{from{opacity:0}}
 @keyframes fout{to{opacity:0}}
-.scroll{font-size:9px;font-weight:600;letter-spacing:.42em;margin-right:-.42em;margin-top:clamp(6px,1.4svh,14px)}
-.reveal .scroll.rv{opacity:.7}
-@media (max-height:720px){ .scroll{display:none} }
-.hero .foot{width:100%;margin-top:clamp(8px,1.6svh,16px)}
-
-/* ───────── names ───────── */
-.names{position:relative;background:#40455b url(img/navy.webp) center/cover;color:var(--lav);text-align:center;
-  padding:150px 28px calc(env(safe-area-inset-bottom) + 150px);overflow:hidden}
-.corner{position:absolute;width:clamp(96px,30vw,150px);opacity:.95}
+/* poster-02 type + furniture */
+.corner{position:absolute;width:var(--cw)}
 .corner.tl{top:18px;left:14px}.corner.tr{top:18px;right:14px;transform:scaleX(-1)}
 .corner.bl{bottom:18px;left:14px;transform:scaleY(-1)}.corner.br{bottom:18px;right:14px;transform:scale(-1)}
-.names h2,.hero h2{font-size:clamp(24px,7.4vw,38px);font-weight:900;font-stretch:118%;font-variation-settings:'wdth' 118;letter-spacing:.01em;line-height:1}
-.names h3,.hero h3{font-size:clamp(14px,4.3vw,21px);font-weight:800;font-stretch:118%;font-variation-settings:'wdth' 118;margin-top:6px}
-.names h4,.hero h4{font-size:13px;font-weight:700;margin:40px 0 18px;letter-spacing:.02em}
-.hero h2{font-size:clamp(20px,6.4vw,36px);white-space:nowrap}
-.hero h3{font-size:clamp(12px,3.8vw,20px)}
-.hero h4{margin:clamp(12px,2.4svh,24px) 0 clamp(4px,1svh,12px)}
-.list{list-style:none;display:grid;grid-template-columns:repeat(2,minmax(0,max-content));justify-content:center;gap:9px 26px;font-size:12.5px;font-weight:500;letter-spacing:.01em}
-.bye{margin-top:44px;font-size:13px;font-weight:700}
-.bye+p{font-size:12.5px;margin-top:10px}
-.foot{display:flex;justify-content:space-between;align-items:center;margin-top:64px;font-size:10.5px;font-weight:600;line-height:1.45;text-align:left}
+.hero h2{font-size:clamp(20px,6.4vw,36px);font-weight:900;font-stretch:118%;font-variation-settings:'wdth' 118;letter-spacing:.01em;line-height:1;white-space:nowrap}
+.hero h3{font-size:clamp(12px,3.8vw,20px);font-weight:800;font-stretch:118%;font-variation-settings:'wdth' 118;margin-top:6px}
+.hero h4{font-size:13px;font-weight:700;letter-spacing:.02em;margin:clamp(12px,2.4svh,24px) 0 clamp(4px,1svh,12px)}
+/* 1fr | logo | 1fr — the logo sits on the exact centre whatever the side texts' widths */
+.foot{width:100%;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px;margin-top:clamp(8px,1.6svh,16px);
+  font-size:10.5px;font-weight:600;line-height:1.45;text-align:left}
 .foot p:last-child{text-align:right}
 .foot img{width:26px}
 
-@media (min-width:700px){ .list{grid-template-columns:repeat(3,max-content)} }
 @media (prefers-reduced-motion:reduce){
   .stage,.door,.rv,.key,.night{transition-duration:.01s;transition-delay:0s}
   .fl .h{animation-duration:.01s!important;animation-delay:0s!important}
 }
 </style>
 </head>
-<body class="locked">
+<body>
 
 <section class="hero" id="hero">
   <div class="stage">
@@ -155,39 +142,17 @@ button{font:inherit;color:inherit;background:none;border:0}
       <div class="unit rv" style="--i:5"><label>HOURS</label><div class="digits" data-u="h"></div></div>
       <div class="unit rv" style="--i:6"><label>MINUTES</label><div class="digits" data-u="m"></div></div>
       <div class="unit rv" style="--i:7"><label>SECONDS</label><div class="digits" data-u="s"></div></div>
-      <p class="scroll rv" style="--i:8">SCROLL ↓</p>
     </div>
 
-    <div class="foot rv" style="--i:9">
+    <div class="foot rv" style="--i:8">
       <p>SNU COOPERATION<br>R<span class="amp">&amp;</span>D CENTER B<br>5F SQUARE HALL</p>
       <img src="img/logo.webp" alt="Samsung Design Membership">
       <p>NOVEMBER 25<br>WEDNESDAY<br>6:00 PM</p>
     </div>
   </div>
-  <img class="corner bl rv" style="--i:10" src="img/corner.webp" alt=""><img class="corner br rv" style="--i:10" src="img/corner.webp" alt="">
+  <img class="corner bl rv" style="--i:9" src="img/corner.webp" alt=""><img class="corner br rv" style="--i:9" src="img/corner.webp" alt="">
 </section>
 
-<section class="names">
-  <img class="corner tl" src="img/corner.webp" alt=""><img class="corner tr" src="img/corner.webp" alt="">
-  <img class="corner bl" src="img/corner.webp" alt=""><img class="corner br" src="img/corner.webp" alt="">
-  <h2>ONE STEP BEYOND</h2>
-  <h3>HAPPILY EVER AFTER</h3>
-  <h4>2026 GRADUATION CEREMONY</h4>
-  <ul class="list">
-    <li>JUNHONG YANG</li><li>JUNGMIN PARK</li><li>SEOHUI LEE</li><li>YUJIN JUNG</li><li>DONGHEON KANG</li><li>YEJI HAN</li>
-    <li>WANHYEOK CHOI</li><li>YUBIN SEO</li><li>MINYEONG JUNG</li><li>JUNGMIN PARK</li><li>IIYEO LEE</li><li>SEOHYEON CHO</li>
-    <li>HYUNBIN SURH</li><li>SIHEON SONG</li><li>SEYEON PARK</li><li>HYEONJI YANG</li><li>SEUNGHEE KIM</li><li>DOWAN KIM</li>
-    <li>JUEUN LEE</li><li>SEUNGWHAN RA</li><li>SIWOO KIM</li><li>JUNWOO LIM</li><li>CHAEYOUNG BEAK</li><li>JUHYEON JEON</li>
-    <li>DOHYUN PARK</li><li>BYEOL JANG</li>
-  </ul>
-  <p class="bye">WITH GOODBYE</p>
-  <p>SOYOUNG JUNG</p>
-  <div class="foot">
-    <p>SNU COOPERATION<br>R<span class="amp">&amp;</span>D CENTER B<br>5F SQUARE HALL</p>
-    <img src="img/logo.webp" alt="Samsung Design Membership">
-    <p>NOVEMBER 25<br>WEDNESDAY<br>6:00 PM</p>
-  </div>
-</section>
 
 <script>
 const TARGET = new Date('2026-11-25T18:00:00+09:00').getTime();
@@ -231,7 +196,6 @@ document.getElementById('key').addEventListener('click',()=>{
   hero.classList.add('unlock');                                       // key fades, gate fades in
   setTimeout(()=>hero.classList.add('open'),1500);                    // doors swing open
   setTimeout(()=>{ hero.classList.add('reveal'); opened=true; update(); },3400);  // night scene settles, credits slide in
-  setTimeout(()=>document.body.classList.remove('locked'),5600);
 });
 </script>
 </body>
