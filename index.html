@@ -79,14 +79,26 @@ button{font:inherit;color:inherit;background:none;border:0}
 .unit{display:flex;flex-direction:column;align-items:center;gap:clamp(4px,.8svh,7px)}
 .unit label{font-size:9.5px;font-weight:600;letter-spacing:.42em;margin-right:-.42em;color:var(--ink)}
 .digits{display:flex;font-size:clamp(40px,6.3svh,58px);font-weight:900;font-stretch:118%;font-variation-settings:'wdth' 118;
-  letter-spacing:-.02em;line-height:1;color:var(--ink);font-variant-numeric:tabular-nums;
+  line-height:1;color:var(--ink);font-variant-numeric:tabular-nums;gap:.06em;
   -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.3' numOctaves='1' seed='4'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -18 0 0 0 13.4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E") 0 0/140px;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.3' numOctaves='1' seed='4'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -18 0 0 0 13.4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E") 0 0/140px}
-.dg{position:relative;width:.74em;height:1em}
-.dg i{position:absolute;inset:0;display:grid;place-items:center;font-style:normal}
-.dg i.in{animation:din .9s cubic-bezier(.2,.7,.2,1) both}
-.dg i.out{animation:dout .5s ease-in forwards}
-@keyframes din{from{opacity:0;filter:blur(10px);transform:scale(1.12)}}
-@keyframes dout{to{opacity:0;filter:blur(8px);transform:scale(.94)}}
+/* frameless split-flap: no card, just the fold — top half falls, bottom half lands */
+.fl{position:relative;width:.8em;height:1.1em;perspective:3.2em}
+.fl .h{position:absolute;left:0;right:0;height:50%;overflow:hidden;backface-visibility:hidden}
+.fl .h b{position:absolute;left:0;right:0;height:200%;display:grid;place-items:center;font-weight:inherit}
+.fl .t{top:0;transform-origin:50% 100%;clip-path:inset(0 0 .025em 0)}
+.fl .t b{top:0}
+.fl .bt{bottom:0;transform-origin:50% 0;clip-path:inset(.025em 0 0 0)}
+.fl .bt b{bottom:0}
+.fl .ft,.fl .fb{visibility:hidden}
+.fl.go .ft,.fl.go .fb{visibility:visible}
+.fl.go .st{animation:fin .34s ease-in both;animation-delay:var(--d,0s)}
+.fl.go .ft{animation:ft .34s ease-in both;animation-delay:var(--d,0s)}
+.fl.go .fb{animation:fb .34s cubic-bezier(.2,.7,.3,1) both;animation-delay:calc(var(--d,0s) + .34s)}
+.fl.go .sb{animation:fout .34s linear both;animation-delay:calc(var(--d,0s) + .34s)}
+@keyframes ft{from{transform:rotateX(0)}to{transform:rotateX(-90deg);opacity:.2}}
+@keyframes fb{from{transform:rotateX(90deg);opacity:.2}to{transform:rotateX(0)}}
+@keyframes fin{from{opacity:0}}
+@keyframes fout{to{opacity:0}}
 
 .title{display:flex;flex-direction:column;align-items:center}
 .title .sub{width:min(46vw,210px)}
@@ -100,7 +112,7 @@ button{font:inherit;color:inherit;background:none;border:0}
 .corner{position:absolute;width:clamp(96px,30vw,150px);opacity:.95}
 .corner.tl{top:18px;left:14px}.corner.tr{top:18px;right:14px;transform:scaleX(-1)}
 .corner.bl{bottom:18px;left:14px;transform:scaleY(-1)}.corner.br{bottom:18px;right:14px;transform:scale(-1)}
-.names h2{font-size:clamp(24px,7.4vw,38px);font-weight:900;font-stretch:118%;font-variation-settings:'wdth' 118;letter-spacing:-.03em;line-height:1}
+.names h2{font-size:clamp(24px,7.4vw,38px);font-weight:900;font-stretch:118%;font-variation-settings:'wdth' 118;letter-spacing:.01em;line-height:1}
 .names h3{font-size:clamp(14px,4.3vw,21px);font-weight:800;font-stretch:118%;font-variation-settings:'wdth' 118;margin-top:6px}
 .names h4{font-size:13px;font-weight:700;margin:40px 0 18px;letter-spacing:.02em}
 .list{list-style:none;display:grid;grid-template-columns:repeat(2,minmax(0,max-content));justify-content:center;gap:9px 26px;font-size:12.5px;font-weight:500;letter-spacing:.01em}
@@ -115,7 +127,7 @@ button{font:inherit;color:inherit;background:none;border:0}
   .stage,.door,.rv,.key{transition-duration:.01s;transition-delay:0s}
   .sky{transition-duration:.01s}
   .rv.late{transition-delay:0s}
-  .dg i{animation-duration:.01s!important;animation-delay:0s!important}
+  .fl .h{animation-duration:.01s!important;animation-delay:0s!important}
 }
 </style>
 </head>
@@ -178,15 +190,17 @@ button{font:inherit;color:inherit;background:none;border:0}
 <script>
 const TARGET = new Date('2026-11-25T18:00:00+09:00').getTime();
 
-// one numeral slot: old value dissolves out, new one resolves in from a blur (film title dissolve)
+// frameless flip: static top(new) / static bottom(old) / falling flap(old top) / landing flap(new bottom)
 function digit(){
-  const el=document.createElement('span'); el.className='dg'; let cur='';
+  const el=document.createElement('span'); el.className='fl';
+  el.innerHTML='<span class="h t st"><b></b></span><span class="h bt sb"><b></b></span><span class="h t ft"><b></b></span><span class="h bt fb"><b></b></span>';
+  const [st,sb,ft,fb]=el.querySelectorAll('b'); let cur='';
+  el.addEventListener('animationend',e=>{ if(e.animationName==='fb'){ sb.textContent=ft.textContent=cur; el.classList.remove('go'); }});
   el.set=(v,delay=0)=>{
-    if(v===cur) return; cur=v;
-    const old=el.lastElementChild;
-    if(old){ old.className='out'; old.addEventListener('animationend',()=>old.remove(),{once:true}); }
-    const n=document.createElement('i'); n.className='in'; n.textContent=v; n.style.animationDelay=delay+'s';
-    el.append(n);
+    if(v===cur) return;
+    ft.textContent=sb.textContent=cur; st.textContent=fb.textContent=v; cur=v;
+    el.style.setProperty('--d',delay+'s');
+    el.classList.remove('go'); void el.offsetWidth; el.classList.add('go');
   };
   return el;
 }
