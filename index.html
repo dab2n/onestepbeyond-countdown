@@ -10,14 +10,15 @@
 <meta property="og:description" content="2026 Graduation Ceremony · 11.25 WED 6:00 PM">
 <link rel="preload" href="img/gate-l.webp" as="image">
 <link rel="preload" href="img/gate-r.webp" as="image">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
 <style>
 :root{
   --ink:#34354a; --navy:#40455b; --card:#3d4160; --lav:#dfe3f5; --lav2:#b2bce8;
   --gutter:16px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{background:#c9cdea;color:var(--ink);font-family:Pretendard,-apple-system,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+html,body{background:#c9cdea;color:var(--ink);font-family:Archivo,'Helvetica Neue',Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
 body{overflow-x:hidden}
 body.locked{overflow:hidden;height:100svh}
 img{display:block;max-width:100%;user-select:none;-webkit-user-drag:none}
@@ -31,7 +32,7 @@ button{font:inherit;color:inherit;background:none;border:0}
 .hero{position:relative;height:100svh;min-height:560px;overflow:hidden;background:#f6f8fc}
 .sky{position:absolute;inset:0;background:url(img/bg.webp?v=3) center/cover;
   opacity:0;transform:translateY(60%);transition:transform 2.4s cubic-bezier(.22,.8,.2,1),opacity 1.6s ease}
-.unlock .sky{opacity:1;transform:none}
+.dusk .sky{opacity:1;transform:none}
 /* poster-ratio stage: covers the viewport height, crops the sides on phones.
    +0.04%: the gate's symmetry axis sits at x=1251 of 2504, so nudge it onto the exact centre */
 .stage{position:absolute;top:0;left:50%;height:100%;aspect-ratio:2504/3532;min-width:100%;
@@ -66,24 +67,26 @@ button{font:inherit;color:inherit;background:none;border:0}
 .content>*{width:100%}
 .info{display:flex;justify-content:space-between;font-weight:700;font-size:11px;line-height:1.35;letter-spacing:.01em;text-transform:uppercase}
 .info p:last-child{text-align:right}
+.amp{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif}
 
 /* elements slide in from the top, one after another */
 .rv{opacity:0;transform:translateY(-26px);transition:opacity 1s ease,transform 1.2s cubic-bezier(.2,.7,.2,1);transition-delay:calc(var(--i)*.16s)}
-.reveal .rv{opacity:1;transform:none}
+.reveal .rv:not(.late),.dusk .rv.late{opacity:1;transform:none}
+.rv.late{transition-delay:calc(.9s + (var(--i) - 5)*.16s)}
 
 /* countdown — stacked like film credits */
 .count{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(10px,2svh,18px)}
-.unit{display:flex;flex-direction:column;align-items:center;gap:clamp(5px,.9svh,8px)}
+.unit{display:flex;flex-direction:column;align-items:center;gap:clamp(4px,.8svh,7px)}
 .unit label{font-size:9.5px;font-weight:600;letter-spacing:.42em;margin-right:-.42em;color:var(--ink)}
-.digits{display:flex;font-size:clamp(34px,5.4svh,46px);font-weight:500;line-height:1;color:var(--card);font-variant-numeric:tabular-nums}
-.dg{position:relative;width:.62em;height:1.4em;overflow:hidden;
-  -webkit-mask-image:linear-gradient(transparent,#000 24%,#000 76%,transparent);
-          mask-image:linear-gradient(transparent,#000 24%,#000 76%,transparent)}
+.digits{display:flex;font-size:clamp(40px,6.3svh,58px);font-weight:900;font-stretch:118%;font-variation-settings:'wdth' 118;
+  letter-spacing:-.02em;line-height:1;color:var(--ink);font-variant-numeric:tabular-nums;
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.3' numOctaves='1' seed='4'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -18 0 0 0 13.4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E") 0 0/140px;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.3' numOctaves='1' seed='4'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -18 0 0 0 13.4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E") 0 0/140px}
+.dg{position:relative;width:.74em;height:1em}
 .dg i{position:absolute;inset:0;display:grid;place-items:center;font-style:normal}
-.dg i.in{animation:rin .65s cubic-bezier(.16,1,.3,1) both}
-.dg i.out{animation:rout .65s cubic-bezier(.16,1,.3,1) forwards}
-@keyframes rin{from{transform:translateY(85%);opacity:0;filter:blur(3.5px)}}
-@keyframes rout{to{transform:translateY(-85%);opacity:0;filter:blur(3.5px)}}
+.dg i.in{animation:din .9s cubic-bezier(.2,.7,.2,1) both}
+.dg i.out{animation:dout .5s ease-in forwards}
+@keyframes din{from{opacity:0;filter:blur(10px);transform:scale(1.12)}}
+@keyframes dout{to{opacity:0;filter:blur(8px);transform:scale(.94)}}
 
 .title{display:flex;flex-direction:column;align-items:center}
 .title .sub{width:min(46vw,210px)}
@@ -97,8 +100,8 @@ button{font:inherit;color:inherit;background:none;border:0}
 .corner{position:absolute;width:clamp(96px,30vw,150px);opacity:.95}
 .corner.tl{top:18px;left:14px}.corner.tr{top:18px;right:14px;transform:scaleX(-1)}
 .corner.bl{bottom:18px;left:14px;transform:scaleY(-1)}.corner.br{bottom:18px;right:14px;transform:scale(-1)}
-.names h2{font-size:clamp(26px,8vw,40px);font-weight:800;letter-spacing:-.03em;line-height:1}
-.names h3{font-size:clamp(15px,4.6vw,22px);font-weight:700;margin-top:6px}
+.names h2{font-size:clamp(24px,7.4vw,38px);font-weight:900;font-stretch:118%;font-variation-settings:'wdth' 118;letter-spacing:-.03em;line-height:1}
+.names h3{font-size:clamp(14px,4.3vw,21px);font-weight:800;font-stretch:118%;font-variation-settings:'wdth' 118;margin-top:6px}
 .names h4{font-size:13px;font-weight:700;margin:40px 0 18px;letter-spacing:.02em}
 .list{list-style:none;display:grid;grid-template-columns:repeat(2,minmax(0,max-content));justify-content:center;gap:9px 26px;font-size:12.5px;font-weight:500;letter-spacing:.01em}
 .bye{margin-top:44px;font-size:13px;font-weight:700}
@@ -111,6 +114,7 @@ button{font:inherit;color:inherit;background:none;border:0}
 @media (prefers-reduced-motion:reduce){
   .stage,.door,.rv,.key{transition-duration:.01s;transition-delay:0s}
   .sky{transition-duration:.01s}
+  .rv.late{transition-delay:0s}
   .dg i{animation-duration:.01s!important;animation-delay:0s!important}
 }
 </style>
@@ -129,7 +133,7 @@ button{font:inherit;color:inherit;background:none;border:0}
 
   <div class="content">
     <div class="info rv" style="--i:0">
-      <p>SNU Cooperation<br>R&amp;D Center B<br>5F Square Hall</p>
+      <p>SNU Cooperation<br>R<span class="amp">&amp;</span>D Center B<br>5F Square Hall</p>
       <p>November 25<br>Wednesday<br>6:00 PM</p>
     </div>
 
@@ -141,10 +145,10 @@ button{font:inherit;color:inherit;background:none;border:0}
     </div>
 
     <div class="title">
-      <img class="sub rv" style="--i:5" src="img/title-sub.webp?v=3" alt="2026 Graduation Ceremony">
-      <img class="main rv" style="--i:6" src="img/title.webp?v=3" alt="ONE STEP BEYOND">
-      <img class="hae rv" style="--i:7" src="img/title-hae.webp?v=3" alt="HAPPILY EVER AFTER">
-      <p class="scroll rv" style="--i:8">SCROLL ↓</p>
+      <img class="sub rv late" style="--i:5" src="img/title-sub.webp?v=3" alt="2026 Graduation Ceremony">
+      <img class="main rv late" style="--i:6" src="img/title.webp?v=3" alt="ONE STEP BEYOND">
+      <img class="hae rv late" style="--i:7" src="img/title-hae.webp?v=3" alt="HAPPILY EVER AFTER">
+      <p class="scroll rv late" style="--i:8">SCROLL ↓</p>
     </div>
   </div>
 </section>
@@ -165,7 +169,7 @@ button{font:inherit;color:inherit;background:none;border:0}
   <p class="bye">WITH GOODBYE</p>
   <p>SOYOUNG JUNG</p>
   <div class="foot">
-    <p>SNU COOPERATION<br>R&amp;D CENTER B<br>5F SQUARE HALL</p>
+    <p>SNU COOPERATION<br>R<span class="amp">&amp;</span>D CENTER B<br>5F SQUARE HALL</p>
     <img src="img/logo.webp" alt="Samsung Design Membership">
     <p>NOVEMBER 25<br>WEDNESDAY<br>6:00 PM</p>
   </div>
@@ -174,7 +178,7 @@ button{font:inherit;color:inherit;background:none;border:0}
 <script>
 const TARGET = new Date('2026-11-25T18:00:00+09:00').getTime();
 
-// one digit window: the old numeral rolls up and out, the new one rises in from below (credit roll)
+// one numeral slot: old value dissolves out, new one resolves in from a blur (film title dissolve)
 function digit(){
   const el=document.createElement('span'); el.className='dg'; let cur='';
   el.set=(v,delay=0)=>{
@@ -211,7 +215,8 @@ document.getElementById('key').addEventListener('click',()=>{
   hero.classList.add('unlock');                                       // key fades, gate fades in
   setTimeout(()=>hero.classList.add('open'),1500);                    // doors swing open
   setTimeout(()=>{ hero.classList.add('reveal'); opened=true; update(); },3200);  // credits slide in
-  setTimeout(()=>document.body.classList.remove('locked'),4800);
+  setTimeout(()=>hero.classList.add('dusk'),4600);                    // last: the violet gradient rises, title rides in
+  setTimeout(()=>document.body.classList.remove('locked'),6600);
 });
 </script>
 </body>
