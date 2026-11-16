@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#dfe2f2">
+<meta name="theme-color" content="#ffffff">
 <title>ONE STEP BEYOND — 2026 Graduation Ceremony</title>
 <meta name="description" content="2026 Graduation Ceremony · November 25 Wednesday 6:00 PM · SNU Cooperation R&D Center B 5F Square Hall">
 <meta property="og:title" content="ONE STEP BEYOND — HAPPILY EVER AFTER">
@@ -29,10 +29,8 @@ button{font:inherit;color:inherit;background:none;border:0}
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .2 0 0 0 0 .2 0 0 0 0 .3 0 0 0 1.4 -.4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 
 /* ───────── hero ───────── */
-.hero{position:relative;height:100svh;min-height:560px;overflow:hidden;background:#f6f8fc}
-.sky{position:absolute;inset:0;background:url(img/bg.webp?v=3) center/cover;
-  opacity:0;transform:translateY(60%);transition:transform 2.4s cubic-bezier(.22,.8,.2,1),opacity 1.6s ease}
-.dusk .sky{opacity:1;transform:none}
+.hero{position:relative;height:100svh;min-height:560px;overflow:hidden;background:#fff;
+  --cw:min(28vw,14svh,140px)}               /* corner ornament width */
 /* poster-ratio stage: covers the viewport height, crops the sides on phones.
    +0.04%: the gate's symmetry axis sits at x=1251 of 2504, so nudge it onto the exact centre */
 .stage{position:absolute;top:0;left:50%;height:100%;aspect-ratio:2504/3532;min-width:100%;
@@ -41,45 +39,49 @@ button{font:inherit;color:inherit;background:none;border:0}
   transition:opacity 1.3s ease,filter 1.3s ease,transform 1.6s cubic-bezier(.2,.7,.2,1)}
 .unlock .stage{opacity:1;filter:none;transform:translateX(calc(-50% + .04%))}
 .door{position:absolute;top:0;width:50%;aspect-ratio:1000/2356;will-change:transform;
-  transition:transform 2.6s cubic-bezier(.55,0,.2,1),opacity 2.6s ease}
+  transition:transform 2.6s cubic-bezier(.55,0,.2,1),opacity 2.2s ease .5s}
 .door img{width:100%;height:100%;
   -webkit-mask-image:linear-gradient(#000 48%,rgba(0,0,0,.6) 58%,rgba(0,0,0,.2) 65%,transparent 71%);
           mask-image:linear-gradient(#000 48%,rgba(0,0,0,.6) 58%,rgba(0,0,0,.2) 65%,transparent 71%)}
 .door.l{left:0;transform-origin:0 50%}
 .door.r{right:0;transform-origin:100% 50%}
-.open .door.l{transform:rotateY(78deg);opacity:.5}
-.open .door.r{transform:rotateY(-78deg);opacity:.5}
+.open .door.l{transform:rotateY(78deg);opacity:0}
+.open .door.r{transform:rotateY(-78deg);opacity:0}
+
+/* beyond the gate: the poster-02 night scene */
+.night{position:absolute;inset:0;background:var(--navy) url(img/navy.webp) center/cover;opacity:0;transition:opacity 1.8s ease .8s}
+.open .night{opacity:1}
 
 /* key: alone on the first screen, dead centre of the viewport */
 .key{position:absolute;z-index:3;top:50%;left:50%;transform:translate(-50%,-50%);display:block;line-height:0;cursor:pointer;
   -webkit-tap-highlight-color:transparent;transition:opacity .9s ease .2s}
 .key img{width:clamp(70px,20vw,92px);height:auto;transition:transform .9s cubic-bezier(.3,0,.2,1),filter .9s}
 .key::before{content:"";position:absolute;width:220%;aspect-ratio:1;top:50%;left:50%;transform:translate(-50%,-50%);border-radius:50%;
-  background:radial-gradient(closest-side,rgba(255,255,255,.9),rgba(235,238,255,.45) 55%,transparent);animation:glow 2.4s ease-in-out infinite;z-index:-1}
-@keyframes glow{50%{transform:translate(-50%,-50%) scale(1.15);opacity:.55}}
+  background:radial-gradient(closest-side,rgba(210,215,245,.55),rgba(225,229,250,.25) 55%,transparent);animation:glow 2.4s ease-in-out infinite;z-index:-1}
+@keyframes glow{50%{transform:translate(-50%,-50%) scale(1.15);opacity:.5}}
 .key:active img{transform:scale(.95)}
 .unlock .key{opacity:0;pointer-events:none}
-.unlock .key img{transform:scale(1.2);filter:drop-shadow(0 0 16px #fff) drop-shadow(0 0 28px #fff)}
+.unlock .key img{transform:scale(1.2);filter:drop-shadow(0 0 14px rgba(200,206,245,.9))}
 .unlock .key::before{animation:none;opacity:0;transition:opacity .6s}
 
-.content{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;align-items:center;
-  padding:calc(env(safe-area-inset-top) + 18px) var(--gutter) calc(env(safe-area-inset-bottom) + 18px);pointer-events:none}
-.content>*{width:100%}
-.info{display:flex;justify-content:space-between;font-weight:700;font-size:11px;line-height:1.35;letter-spacing:.01em;text-transform:uppercase}
-.info p:last-child{text-align:right}
+.hero .corner{width:var(--cw);z-index:2}
+.hero .corner.rv{opacity:0}
+.reveal .corner.rv{opacity:.95}
+.content{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;align-items:center;text-align:center;color:var(--lav);
+  padding:calc(env(safe-area-inset-top) + 18px + var(--cw)*1.134 + 8px) 28px calc(env(safe-area-inset-bottom) + 18px + var(--cw)*1.134 + 6px);
+  pointer-events:none}
 .amp{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif}
 
-/* elements slide in from the top, one after another */
-.rv{opacity:0;transform:translateY(-26px);transition:opacity 1s ease,transform 1.2s cubic-bezier(.2,.7,.2,1);transition-delay:calc(var(--i)*.16s)}
-.reveal .rv:not(.late),.dusk .rv.late{opacity:1;transform:none}
-.rv.late{transition-delay:calc(.9s + (var(--i) - 5)*.16s)}
+/* elements slide in from the top, one after another (translate keeps the corners' mirror transforms intact) */
+.rv{opacity:0;translate:0 -26px;transition:opacity 1s ease,translate 1.2s cubic-bezier(.2,.7,.2,1);transition-delay:calc(var(--i)*.14s)}
+.reveal .rv{opacity:1;translate:none}
 
 /* countdown — stacked like film credits */
-.count{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(10px,2svh,18px)}
-.unit{display:flex;flex-direction:column;align-items:center;gap:clamp(4px,.8svh,7px)}
-.unit label{font-size:9.5px;font-weight:600;letter-spacing:.42em;margin-right:-.42em;color:var(--ink)}
-.digits{display:flex;font-size:clamp(40px,6.3svh,58px);font-weight:900;font-stretch:118%;font-variation-settings:'wdth' 118;
-  line-height:1;color:var(--ink);font-variant-numeric:tabular-nums;gap:.06em;
+.count{flex:1;min-height:0;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(8px,1.6svh,16px)}
+.unit{display:flex;flex-direction:column;align-items:center;gap:clamp(3px,.7svh,6px)}
+.unit label{font-size:9.5px;font-weight:600;letter-spacing:.42em;margin-right:-.42em;opacity:.85}
+.digits{display:flex;font-size:clamp(30px,5.2svh,54px);font-weight:900;font-stretch:118%;font-variation-settings:'wdth' 118;
+  line-height:1;color:var(--lav);font-variant-numeric:tabular-nums;gap:.06em;
   -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.3' numOctaves='1' seed='4'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -18 0 0 0 13.4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E") 0 0/140px;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.3' numOctaves='1' seed='4'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -18 0 0 0 13.4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E") 0 0/140px}
 /* frameless split-flap: no card, just the fold — top half falls, bottom half lands */
 .fl{position:relative;width:.8em;height:1.1em;perspective:3.2em}
@@ -99,12 +101,10 @@ button{font:inherit;color:inherit;background:none;border:0}
 @keyframes fb{from{transform:rotateX(90deg);opacity:.2}to{transform:rotateX(0)}}
 @keyframes fin{from{opacity:0}}
 @keyframes fout{to{opacity:0}}
-
-.title{display:flex;flex-direction:column;align-items:center}
-.title .sub{width:min(46vw,210px)}
-.title .main{width:min(86vw,420px);margin-top:clamp(8px,1.4svh,12px)}
-.title .hae{width:min(53vw,256px);margin-top:clamp(8px,1.4svh,12px)}
-.scroll{margin-top:clamp(12px,2.2svh,20px);font-size:9.5px;font-weight:600;letter-spacing:.42em;margin-right:-.42em;color:#fff;text-align:center}
+.scroll{font-size:9px;font-weight:600;letter-spacing:.42em;margin-right:-.42em;margin-top:clamp(6px,1.4svh,14px)}
+.reveal .scroll.rv{opacity:.7}
+@media (max-height:720px){ .scroll{display:none} }
+.hero .foot{width:100%;margin-top:clamp(8px,1.6svh,16px)}
 
 /* ───────── names ───────── */
 .names{position:relative;background:#40455b url(img/navy.webp) center/cover;color:var(--lav);text-align:center;
@@ -112,9 +112,12 @@ button{font:inherit;color:inherit;background:none;border:0}
 .corner{position:absolute;width:clamp(96px,30vw,150px);opacity:.95}
 .corner.tl{top:18px;left:14px}.corner.tr{top:18px;right:14px;transform:scaleX(-1)}
 .corner.bl{bottom:18px;left:14px;transform:scaleY(-1)}.corner.br{bottom:18px;right:14px;transform:scale(-1)}
-.names h2{font-size:clamp(24px,7.4vw,38px);font-weight:900;font-stretch:118%;font-variation-settings:'wdth' 118;letter-spacing:.01em;line-height:1}
-.names h3{font-size:clamp(14px,4.3vw,21px);font-weight:800;font-stretch:118%;font-variation-settings:'wdth' 118;margin-top:6px}
-.names h4{font-size:13px;font-weight:700;margin:40px 0 18px;letter-spacing:.02em}
+.names h2,.hero h2{font-size:clamp(24px,7.4vw,38px);font-weight:900;font-stretch:118%;font-variation-settings:'wdth' 118;letter-spacing:.01em;line-height:1}
+.names h3,.hero h3{font-size:clamp(14px,4.3vw,21px);font-weight:800;font-stretch:118%;font-variation-settings:'wdth' 118;margin-top:6px}
+.names h4,.hero h4{font-size:13px;font-weight:700;margin:40px 0 18px;letter-spacing:.02em}
+.hero h2{font-size:clamp(20px,6.4vw,36px);white-space:nowrap}
+.hero h3{font-size:clamp(12px,3.8vw,20px)}
+.hero h4{margin:clamp(12px,2.4svh,24px) 0 clamp(4px,1svh,12px)}
 .list{list-style:none;display:grid;grid-template-columns:repeat(2,minmax(0,max-content));justify-content:center;gap:9px 26px;font-size:12.5px;font-weight:500;letter-spacing:.01em}
 .bye{margin-top:44px;font-size:13px;font-weight:700}
 .bye+p{font-size:12.5px;margin-top:10px}
@@ -124,9 +127,7 @@ button{font:inherit;color:inherit;background:none;border:0}
 
 @media (min-width:700px){ .list{grid-template-columns:repeat(3,max-content)} }
 @media (prefers-reduced-motion:reduce){
-  .stage,.door,.rv,.key{transition-duration:.01s;transition-delay:0s}
-  .sky{transition-duration:.01s}
-  .rv.late{transition-delay:0s}
+  .stage,.door,.rv,.key,.night{transition-duration:.01s;transition-delay:0s}
   .fl .h{animation-duration:.01s!important;animation-delay:0s!important}
 }
 </style>
@@ -134,35 +135,36 @@ button{font:inherit;color:inherit;background:none;border:0}
 <body class="locked">
 
 <section class="hero" id="hero">
-  <div class="sky"></div>
   <div class="stage">
     <div class="door l"><img src="img/gate-l.webp" alt=""></div>
     <div class="door r"><img src="img/gate-r.webp" alt=""></div>
   </div>
+  <div class="night"></div>
   <div class="grain"></div>
 
   <button class="key" id="key" aria-label="열쇠를 눌러 대문 열기"><img src="img/key.webp?v=3" alt="" draggable="false"></button>
 
+  <img class="corner tl rv" style="--i:0" src="img/corner.webp" alt=""><img class="corner tr rv" style="--i:0" src="img/corner.webp" alt="">
   <div class="content">
-    <div class="info rv" style="--i:0">
-      <p>SNU Cooperation<br>R<span class="amp">&amp;</span>D Center B<br>5F Square Hall</p>
-      <p>November 25<br>Wednesday<br>6:00 PM</p>
-    </div>
+    <h2 class="rv" style="--i:1">ONE STEP BEYOND</h2>
+    <h3 class="rv" style="--i:2">HAPPILY EVER AFTER</h3>
+    <h4 class="rv" style="--i:3">2026 GRADUATION CEREMONY</h4>
 
     <div class="count" aria-live="off">
-      <div class="unit rv" style="--i:1"><label>DAYS</label><div class="digits" data-u="d"></div></div>
-      <div class="unit rv" style="--i:2"><label>HOURS</label><div class="digits" data-u="h"></div></div>
-      <div class="unit rv" style="--i:3"><label>MINUTES</label><div class="digits" data-u="m"></div></div>
-      <div class="unit rv" style="--i:4"><label>SECONDS</label><div class="digits" data-u="s"></div></div>
+      <div class="unit rv" style="--i:4"><label>DAYS</label><div class="digits" data-u="d"></div></div>
+      <div class="unit rv" style="--i:5"><label>HOURS</label><div class="digits" data-u="h"></div></div>
+      <div class="unit rv" style="--i:6"><label>MINUTES</label><div class="digits" data-u="m"></div></div>
+      <div class="unit rv" style="--i:7"><label>SECONDS</label><div class="digits" data-u="s"></div></div>
+      <p class="scroll rv" style="--i:8">SCROLL ↓</p>
     </div>
 
-    <div class="title">
-      <img class="sub rv late" style="--i:5" src="img/title-sub.webp?v=3" alt="2026 Graduation Ceremony">
-      <img class="main rv late" style="--i:6" src="img/title.webp?v=3" alt="ONE STEP BEYOND">
-      <img class="hae rv late" style="--i:7" src="img/title-hae.webp?v=3" alt="HAPPILY EVER AFTER">
-      <p class="scroll rv late" style="--i:8">SCROLL ↓</p>
+    <div class="foot rv" style="--i:9">
+      <p>SNU COOPERATION<br>R<span class="amp">&amp;</span>D CENTER B<br>5F SQUARE HALL</p>
+      <img src="img/logo.webp" alt="Samsung Design Membership">
+      <p>NOVEMBER 25<br>WEDNESDAY<br>6:00 PM</p>
     </div>
   </div>
+  <img class="corner bl rv" style="--i:10" src="img/corner.webp" alt=""><img class="corner br rv" style="--i:10" src="img/corner.webp" alt="">
 </section>
 
 <section class="names">
@@ -214,7 +216,7 @@ function update(){
     const v={d:Math.min(99,Math.floor(s/86400)),h:Math.floor(s/3600)%24,m:Math.floor(s/60)%60,s:s%60};
     let i=0;
     for(const k in v){
-      const str=String(v[k]).padStart(2,'0'), d=first?.35+i++*.16:0;   // first reveal follows the top-down slide-in
+      const str=String(v[k]).padStart(2,'0'), d=first?.95+i++*.14:0;   // first reveal follows the top-down slide-in
       cards[k][0].set(str[0],d); cards[k][1].set(str[1],d+.06);
     }
     first=false;
@@ -228,9 +230,8 @@ document.getElementById('key').addEventListener('click',()=>{
   navigator.vibrate?.(25);
   hero.classList.add('unlock');                                       // key fades, gate fades in
   setTimeout(()=>hero.classList.add('open'),1500);                    // doors swing open
-  setTimeout(()=>{ hero.classList.add('reveal'); opened=true; update(); },3200);  // credits slide in
-  setTimeout(()=>hero.classList.add('dusk'),4600);                    // last: the violet gradient rises, title rides in
-  setTimeout(()=>document.body.classList.remove('locked'),6600);
+  setTimeout(()=>{ hero.classList.add('reveal'); opened=true; update(); },3400);  // night scene settles, credits slide in
+  setTimeout(()=>document.body.classList.remove('locked'),5600);
 });
 </script>
 </body>
