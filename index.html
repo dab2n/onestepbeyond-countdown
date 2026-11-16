@@ -28,18 +28,22 @@ button{font:inherit;color:inherit;background:none;border:0}
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .2 0 0 0 0 .2 0 0 0 0 .3 0 0 0 1.4 -.4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 
 /* ───────── hero ───────── */
-.hero{position:relative;height:100svh;min-height:560px;overflow:hidden;
-  background:url(img/bg.webp?v=3) center/cover}
+.hero{position:relative;height:100svh;min-height:560px;overflow:hidden;background:#f6f8fc}
+.sky{position:absolute;inset:0;background:url(img/bg.webp?v=3) center/cover;
+  opacity:0;transform:translateY(60%);transition:transform 2.4s cubic-bezier(.22,.8,.2,1),opacity 1.6s ease}
+.unlock .sky{opacity:1;transform:none}
 /* poster-ratio stage: covers the viewport height, crops the sides on phones.
    +0.04%: the gate's symmetry axis sits at x=1251 of 2504, so nudge it onto the exact centre */
 .stage{position:absolute;top:0;left:50%;height:100%;aspect-ratio:2504/3532;min-width:100%;
-  background:url(img/bg.webp?v=3) top/100% auto no-repeat;perspective:1400px;
+  perspective:1400px;
   opacity:0;filter:blur(10px);transform:translateX(calc(-50% + .04%)) scale(1.04);
   transition:opacity 1.3s ease,filter 1.3s ease,transform 1.6s cubic-bezier(.2,.7,.2,1)}
 .unlock .stage{opacity:1;filter:none;transform:translateX(calc(-50% + .04%))}
 .door{position:absolute;top:0;width:50%;aspect-ratio:1000/2356;will-change:transform;
   transition:transform 2.6s cubic-bezier(.55,0,.2,1),opacity 2.6s ease}
-.door img{width:100%;height:100%}
+.door img{width:100%;height:100%;
+  -webkit-mask-image:linear-gradient(#000 48%,rgba(0,0,0,.6) 58%,rgba(0,0,0,.2) 65%,transparent 71%);
+          mask-image:linear-gradient(#000 48%,rgba(0,0,0,.6) 58%,rgba(0,0,0,.2) 65%,transparent 71%)}
 .door.l{left:0;transform-origin:0 50%}
 .door.r{right:0;transform-origin:100% 50%}
 .open .door.l{transform:rotateY(78deg);opacity:.5}
@@ -71,24 +75,15 @@ button{font:inherit;color:inherit;background:none;border:0}
 .count{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(10px,2svh,18px)}
 .unit{display:flex;flex-direction:column;align-items:center;gap:clamp(5px,.9svh,8px)}
 .unit label{font-size:9.5px;font-weight:600;letter-spacing:.42em;margin-right:-.42em;color:var(--ink)}
-.unit .digits{display:flex;gap:3px}
-
-.flip{--w:clamp(28px,4.3svh,38px);--h:calc(var(--w)*1.32);position:relative;width:var(--w);height:var(--h);
-  font-size:calc(var(--w)*.92);font-weight:700;line-height:1;color:var(--lav);perspective:200px;border-radius:4px;
-  box-shadow:0 6px 14px -8px rgba(30,32,64,.6);font-variant-numeric:tabular-nums}
-.flip .h{position:absolute;left:0;right:0;height:50%;overflow:hidden;background:var(--card);backface-visibility:hidden}
-.flip .h b{position:absolute;left:0;right:0;height:200%;display:grid;place-items:center;font-weight:700}
-.flip .t{top:0;border-radius:4px 4px 0 0;transform-origin:50% 100%;background:linear-gradient(#444969,#3d4160)}
-.flip .t b{top:0}
-.flip .bt{bottom:0;border-radius:0 0 4px 4px;transform-origin:50% 0}
-.flip .bt b{bottom:0}
-.flip::after{content:"";position:absolute;left:0;right:0;top:50%;height:1px;background:rgba(20,22,40,.55);z-index:5}
-.flip .ft{z-index:3}
-.flip .fb{z-index:3;transform:rotateX(90deg)}
-.flip.go .ft{animation:ft .3s ease-in forwards}
-.flip.go .fb{animation:fb .3s .3s ease-out forwards}
-@keyframes ft{to{transform:rotateX(-90deg)}}
-@keyframes fb{from{transform:rotateX(90deg)}to{transform:rotateX(0)}}
+.digits{display:flex;font-size:clamp(34px,5.4svh,46px);font-weight:500;line-height:1;color:var(--card);font-variant-numeric:tabular-nums}
+.dg{position:relative;width:.62em;height:1.4em;overflow:hidden;
+  -webkit-mask-image:linear-gradient(transparent,#000 24%,#000 76%,transparent);
+          mask-image:linear-gradient(transparent,#000 24%,#000 76%,transparent)}
+.dg i{position:absolute;inset:0;display:grid;place-items:center;font-style:normal}
+.dg i.in{animation:rin .65s cubic-bezier(.16,1,.3,1) both}
+.dg i.out{animation:rout .65s cubic-bezier(.16,1,.3,1) forwards}
+@keyframes rin{from{transform:translateY(85%);opacity:0;filter:blur(3.5px)}}
+@keyframes rout{to{transform:translateY(-85%);opacity:0;filter:blur(3.5px)}}
 
 .title{display:flex;flex-direction:column;align-items:center}
 .title .sub{width:min(46vw,210px)}
@@ -115,13 +110,15 @@ button{font:inherit;color:inherit;background:none;border:0}
 @media (min-width:700px){ .list{grid-template-columns:repeat(3,max-content)} }
 @media (prefers-reduced-motion:reduce){
   .stage,.door,.rv,.key{transition-duration:.01s;transition-delay:0s}
-  .flip.go .ft,.flip.go .fb{animation-duration:.01s;animation-delay:0s}
+  .sky{transition-duration:.01s}
+  .dg i{animation-duration:.01s!important;animation-delay:0s!important}
 }
 </style>
 </head>
 <body class="locked">
 
 <section class="hero" id="hero">
+  <div class="sky"></div>
   <div class="stage">
     <div class="door l"><img src="img/gate-l.webp" alt=""></div>
     <div class="door r"><img src="img/gate-r.webp" alt=""></div>
@@ -177,28 +174,32 @@ button{font:inherit;color:inherit;background:none;border:0}
 <script>
 const TARGET = new Date('2026-11-25T18:00:00+09:00').getTime();
 
-// one flip card: static top(new) / static bottom(old) / flap top(old) / flap bottom(new)
-function card(){
-  const el=document.createElement('div'); el.className='flip';
-  el.innerHTML='<div class="h t"><b>0</b></div><div class="h bt"><b>0</b></div><div class="h t ft"><b>0</b></div><div class="h bt fb"><b>0</b></div>';
-  const [t,b,ft,fb]=el.querySelectorAll('b'); let cur='0';
-  el.addEventListener('animationend',e=>{ if(e.animationName==='fb'){ b.textContent=ft.textContent=cur; el.classList.remove('go'); }});
-  el.set=v=>{
-    if(v===cur) return;
-    ft.textContent=b.textContent=cur; t.textContent=fb.textContent=v; cur=v;
-    el.classList.remove('go'); void el.offsetWidth; el.classList.add('go');
+// one digit window: the old numeral rolls up and out, the new one rises in from below (credit roll)
+function digit(){
+  const el=document.createElement('span'); el.className='dg'; let cur='';
+  el.set=(v,delay=0)=>{
+    if(v===cur) return; cur=v;
+    const old=el.lastElementChild;
+    if(old){ old.className='out'; old.addEventListener('animationend',()=>old.remove(),{once:true}); }
+    const n=document.createElement('i'); n.className='in'; n.textContent=v; n.style.animationDelay=delay+'s';
+    el.append(n);
   };
   return el;
 }
 const cards={};
-document.querySelectorAll('.digits').forEach(d=>{ cards[d.dataset.u]=[card(),card()]; d.append(...cards[d.dataset.u]); });
+document.querySelectorAll('.digits').forEach(d=>{ cards[d.dataset.u]=[digit(),digit()]; d.append(...cards[d.dataset.u]); });
 
-let opened=false;
+let opened=false, first=true;
 function update(){
   if(opened){
     const s=Math.max(0,Math.floor((TARGET-Date.now())/1000));
     const v={d:Math.min(99,Math.floor(s/86400)),h:Math.floor(s/3600)%24,m:Math.floor(s/60)%60,s:s%60};
-    for(const k in v){ const str=String(v[k]).padStart(2,'0'); cards[k][0].set(str[0]); cards[k][1].set(str[1]); }
+    let i=0;
+    for(const k in v){
+      const str=String(v[k]).padStart(2,'0'), d=first?.35+i++*.16:0;   // first reveal follows the top-down slide-in
+      cards[k][0].set(str[0],d); cards[k][1].set(str[1],d+.06);
+    }
+    first=false;
   }
 }
 (function tick(){ update(); setTimeout(tick,1000-Date.now()%1000+5); })();
